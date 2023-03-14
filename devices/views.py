@@ -1,5 +1,6 @@
-from rest_framework import generics, viewsets, routers
+from rest_framework import generics, viewsets, routers, permissions
 from rest_framework.decorators import action
+from rest_framework.permissions import *
 from rest_framework.response import Response
 
 from .serializers import *
@@ -28,3 +29,36 @@ class DevicesViewset(viewsets.ModelViewSet):
     #         return Device.objects.all()[:3]
     #
     #     return Device.objects.filter(pk=pk)
+
+
+class DeviceAPIList(generics.ListCreateAPIView):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Write permissions are only allowed to the owner of the snippet.
+        return obj.user == request.user
+
+
+class DeviceAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer
+    permission_classes = (IsOwnerOrReadOnly,)
+
+
+class DeviceAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer
+    permission_classes = (IsAdminUser,)
