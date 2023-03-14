@@ -1,9 +1,18 @@
-from django.shortcuts import render
 from rest_framework import generics
-from .models import Device
+
 from .serializers import *
 
 
-class DeviceAPIView(generics.ListAPIView):
+class DeviceAPIView(generics.ListCreateAPIView):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer
+
+
+class DeviceAPIUpdate(generics.UpdateAPIView):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer
+
+
+class DeviceAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer

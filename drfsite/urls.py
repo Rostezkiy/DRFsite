@@ -20,5 +20,7 @@ from devices.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/devices', DeviceAPIView.as_view())
+    path('api/v1/devices', DeviceAPIView.as_view()),
+    path('api/v1/devices/<int:pk>', DeviceAPIUpdate.as_view()),
+    path('api/v1/devicedetail/<int:pk>', DeviceAPIDetailView.as_view()),
 ]

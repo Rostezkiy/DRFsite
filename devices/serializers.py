@@ -5,4 +5,4 @@ from devices.models import Device
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
-        fields = ('title', 'category_id')
+        fields = '__all__'
