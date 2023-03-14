@@ -1,18 +1,8 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets, routers
 
 from .serializers import *
 
 
-class DeviceAPIView(generics.ListCreateAPIView):
-    queryset = Device.objects.all()
-    serializer_class = DeviceSerializer
-
-
-class DeviceAPIUpdate(generics.UpdateAPIView):
-    queryset = Device.objects.all()
-    serializer_class = DeviceSerializer
-
-
-class DeviceAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+class DevicesViewset(viewsets.ModelViewSet):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
