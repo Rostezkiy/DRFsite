@@ -27,4 +27,6 @@ urlpatterns = [
     path('api/v2/devices/', DeviceAPIList.as_view()),
     path('api/v2/device/<int:pk>/', DeviceAPIUpdate.as_view()),
     path('api/v2/device/<int:pk>/', DeviceAPIDestroy.as_view()),
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
+
 ]
