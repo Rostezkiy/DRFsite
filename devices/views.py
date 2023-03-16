@@ -1,10 +1,17 @@
 from rest_framework import generics, viewsets, routers, permissions
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import *
 from rest_framework.response import Response
 
 from .serializers import *
 from .models import Category
+
+
+class DeviceAPIListPagination(PageNumberPagination):
+    page_size = 1
+    page_size_query_param = 'page_size'
+    max_page_size = 2
 
 
 class DevicesViewset(viewsets.ModelViewSet):
@@ -35,7 +42,7 @@ class DeviceAPIList(generics.ListCreateAPIView):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
-
+    pagination_class = DeviceAPIListPagination
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
