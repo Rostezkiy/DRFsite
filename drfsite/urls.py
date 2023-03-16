@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from django.contrib import admin
 from django.urls import path, include, re_path
 from devices.views import *
@@ -23,12 +24,15 @@ router.register(r'devices', DevicesViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
     path('api/v1/', include(router.urls)),
     path('api/v1/drf-auth/', include('rest_framework.urls')),
     path('api/v2/devices/', DeviceAPIList.as_view()),
     path('api/v2/device/<int:pk>/', DeviceAPIUpdate.as_view()),
     path('api/v2/device/<int:pk>/', DeviceAPIDestroy.as_view()),
-    path('api/auth/', include('djoser.urls')),  # new
-    re_path(r'^auth/', include('djoser.urls.authtoken')),  # new
+    path('api/v3/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v3/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v3/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
 ]

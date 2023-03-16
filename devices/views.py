@@ -55,7 +55,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class DeviceAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
 
 
 class DeviceAPIDestroy(generics.RetrieveDestroyAPIView):
