@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from devices.views import *
 from rest_framework import routers
 
@@ -24,9 +24,11 @@ router.register(r'devices', DevicesViewset)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
     path('api/v2/devices/', DeviceAPIList.as_view()),
     path('api/v2/device/<int:pk>/', DeviceAPIUpdate.as_view()),
     path('api/v2/device/<int:pk>/', DeviceAPIDestroy.as_view()),
-    path('api/v1/drf-auth/', include('rest_framework.urls')),
+    path('api/auth/', include('djoser.urls')),  # new
+    re_path(r'^auth/', include('djoser.urls.authtoken')),  # new
 
 ]
